@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <div class="container">
+    <title>Health Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <h2>AI Health Risk Predictor</h2>
+    <form method="POST" action="/predict">
+        <label>Select Disease:</label>
+        <select name="disease" onchange="toggleForm(this.value)">
+            <option value="diabetes">Diabetes</option>
+            <option value="cardio">Cardiovascular Disease</option>
+        </select>
+
+        <div id="diabetes-form">
+            <h3>Diabetes Inputs</h3>
+            <input name="pregnancies" placeholder="Pregnancies" required><br>
+            <input name="glucose" placeholder="Glucose" required><br>
+            <input name="blood_pressure" placeholder="Blood Pressure" required><br>
+            <input name="skin_thickness" placeholder="Skin Thickness" required><br>
+            <input name="insulin" placeholder="Insulin" required><br>
+            <input name="bmi" placeholder="BMI" required><br>
+            <input name="dpf" placeholder="Diabetes Pedigree Function" required><br>
+            <input name="age" placeholder="Age" required><br>
+        </div>
+
+        <div id="cardio-form" style="display:none">
+            <h3>Cardio Inputs</h3>
+            <input name="age" placeholder="Age" required><br>
+            <input name="sex" placeholder="Sex (0=female, 1=male)" required><br>
+            <input name="cp" placeholder="Chest Pain Type (0-3)" required><br>
+            <input name="trestbps" placeholder="Resting Blood Pressure" required><br>
+            <input name="chol" placeholder="Cholesterol" required><br>
+            <input name="fbs" placeholder="Fasting Blood Sugar (0/1)" required><br>
+            <input name="restecg" placeholder="Resting ECG (0-2)" required><br>
+            <input name="thalach" placeholder="Max Heart Rate" required><br>
+            <input name="exang" placeholder="Exercise Induced Angina (0/1)" required><br>
+            <input name="oldpeak" placeholder="ST Depression" required><br>
+            <input name="slope" placeholder="Slope (0-2)" required><br>
+            <input name="ca" placeholder="Major Vessels (0-3)" required><br>
+            <input name="thal" placeholder="Thalassemia (1-3)" required><br>
+        </div>
+
+        <br><button type="submit">Predict</button>
+    </form>
+    </body>
+    </html>
+</div>
+
+    <script>
+function toggleForm(disease) {
+    // Hide both initially
+    document.getElementById("diabetes-form").style.display = "none";
+    document.getElementById("cardio-form").style.display = "none";
+
+    // Disable all inputs in both forms
+    Array.from(document.querySelectorAll("#diabetes-form input, #cardio-form input")).forEach(input => {
+        input.disabled = true;
+    });
+
+    // Show and enable the relevant form
+    const formId = disease === "diabetes" ? "diabetes-form" : "cardio-form";
+    document.getElementById(formId).style.display = "block";
+    Array.from(document.querySelectorAll(`#${formId} input`)).forEach(input => {
+        input.disabled = false;
+    });
+}
+
+// Run on page load (in case a value is pre-selected)
+window.onload = function() {
+    const selected = document.querySelector('select[name="disease"]').value;
+    toggleForm(selected);
+};
+
+    </script>
+</body>
+</html>
